@@ -27,9 +27,11 @@ S.No	Story Name									Deve Time (Estimated)	Dev Time (Actual)
 
 Open Questions \ Issues:
 
-1.	For all the in-correct email addresses we will get the bounce email but for the right one we will not receive any email. How\When do we conclude the right email address?
+1.	For all the in-correct email addresses we will get the bounce email but for the right one we will 
+	not receive any email. How\When do we conclude the right email address?
 
-2.	What happens if we do not get bounce email for multiple email address combinations?
+2.	What happens if we do not get bounce email for multiple email address combinations? We will end up
+	with multiple email addresses with "No response" or as valid email address.
 
 3.	What are the 10 email combinations?
 FirstName: John
