@@ -32,6 +32,20 @@ Open Questions \ Issues:
 2.	What happens if we do not get bounce email for multiple email address combinations?
 
 3.	What are the 10 email combinations?
-First.last@domain
-First_last@domain
-lFirst@domain
+FirstName: John
+Last Name: Doe
+Domain: example.com
+
+john@example.com
+johnd@example.com
+jdoe@example.com
+johndoe@example.com
+john.d@example.com
+j.doe@example.com
+john.doe@example.com
+john_d@example.com
+j_doe@example.com
+john_doe@example.com
+john-d@example.com
+j-doe@example.com
+john-doe@example.com
