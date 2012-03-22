@@ -1,0 +1,37 @@
+Email Address Verification Web Application
+
+Client Requirements:
+
+1.	Write a web application that enables me to enter in a domain name of a website (e.g. company.com) and a name of a person who works there (e.g. first name, last name) and then it could send me that person's correct email address.
+
+2.	The way the program would determine the correct email address is by sending emails with different naming conventions and tracking which ones bounce back and verifying which one works. I suspect there are probably 10 common naming conventions for emails and with every inquiry, the program would test all 10 to determine the right email address.
+
+3.	Once the program determines what the right email address is, then an automated email would be sent to the inquirer with the correct email address. The information should be stored in a database to be used for future inquiries.
+
+4.	This person should be able to build this program, tie it to a back-end database, tie into various email sending applications, and create a web user interface. I would like there to be advertising on the website and on the emails that are sent to inquirers with their results. I would like it to be completely functional and ready to go for users to merit completion.
+ 
+Story Board:
+
+
+S.No	Story Name									Deve Time (Estimated)	Dev Time (Actual)
+1.	Create an empty web project with Maven support.	2hrs					1.5hrs
+2.	Come-up with a Database design for 2 tables. One for saving domain, firstname and lastname and second one for saving valid \ invalid email address combinations.
+	4hrs	
+3.	Come up with a SQL script, which can create MySQL Database and also tables. 	4hrs	
+4.	Design a HTML form, which will have Domain, First Name, Last Name, Submitter’s email address and Submit\Cancel. Hook it up with Spring MVC.	4hrs	
+5.	Design a HTML form \ action which will display all the entries from Table-1 in an HTML form (Do not worry about Pagination for now).	4hrs	
+6.	Design a HTML form that will display selected row from (5) with details from Table-1 as Header info and Table-2 as Table underneath.	4hrs	
+7.	Write a poller \ scheduler, which reads “un-processed” request’s from Table-1 and will send out all the combinations of emails (customer says 10 combinations). We need to externalize these combinations. [Also explore if we can do this as part of web request in Story-4.	8hr (may be more)	
+8.	Write a “Spring Integration” email receiver which polls  “this app email” and reads all bounced emails and logs them to Table-2.	8hrs	
+			
+
+Open Questions \ Issues:
+
+1.	For all the in-correct email addresses we will get the bounce email but for the right one we will not receive any email. How\When do we conclude the right email address?
+
+2.	What happens if we do not get bounce email for multiple email address combinations?
+
+3.	What are the 10 email combinations?
+First.last@domain
+First_last@domain
+lFirst@domain
