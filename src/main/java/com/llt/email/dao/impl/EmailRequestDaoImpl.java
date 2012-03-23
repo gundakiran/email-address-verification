@@ -35,14 +35,22 @@ public class EmailRequestDaoImpl extends BaseDaoImpl implements EmailRequestDao 
 	}
 
 	@Override
+	public void update(Integer emailRequestId, String status) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public List<EmailRequest> findAll() {
 		// TODO Auto-generated method stub
-		 return null;
+		return null;
 	}
-	
+
 	@Override
 	public EmailRequest findById(Integer requestId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 }

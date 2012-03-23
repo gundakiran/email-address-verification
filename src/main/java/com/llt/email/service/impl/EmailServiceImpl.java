@@ -37,4 +37,10 @@ public class EmailServiceImpl implements EmailService {
 		return null;
 	}
 
+	@Override
+	public void createEmailRequest(EmailRequest request) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

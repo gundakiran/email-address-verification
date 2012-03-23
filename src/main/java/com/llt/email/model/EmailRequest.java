@@ -20,7 +20,7 @@ public class EmailRequest {
 	private String status;
 	@Column(name="createdDate")
 	private Timestamp createdDate;
-	@Column(name="emailRequestId")
+	@Column(name="updatedDate")
 	private Timestamp updatedDate;
 	
 	public Integer getEmailRequestId() {

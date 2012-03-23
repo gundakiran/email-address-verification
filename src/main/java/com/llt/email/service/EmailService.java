@@ -9,4 +9,7 @@ public interface EmailService {
 	public List<EmailRequest> getAllEmailRequests();
 	public EmailRequest getEmailRequest(Integer requestId);
 	public List<EmailResponse> getEmailResponses(Integer requestId);
+	
+	public void createEmailRequest(EmailRequest request);
+	
 }
