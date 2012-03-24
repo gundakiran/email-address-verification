@@ -81,6 +81,17 @@
               ]]>
 	  	</value>
      </entry>     
+     <entry key="SQL_GET_RESPONSES_BY_REQUEST_ID">
+	  	<value>
+            <![CDATA[
+                SELECT a.emailResponseId emailResponseId, a.emailRequestId emailRequestId, 
+                       a.emailAddressTried emailAddressTried, a.status status,
+                       a.createdDate createdDate, a.updatedDate updatedDate
+                FROM  email_response a
+                WHERE a.emailRequestId = :requestId   			       	
+              ]]>
+	  	</value>
+     </entry>      
         
   </util:map>  
   

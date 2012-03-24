@@ -1,13 +1,21 @@
 package com.llt.email.dao.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.llt.email.dao.EmailRequestDao;
@@ -23,34 +31,79 @@ public class EmailRequestDaoImpl extends BaseDaoImpl implements EmailRequestDao 
 	@Autowired
 	@Qualifier("beanHandler")
 	protected BeanHandler<EmailRequest> resultBeanHandler;
-	
+
 	@Override
 	public void insert(EmailRequest request) {
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(
 				dataSource);
-		
+
 		String sqlText = getSQL(SQL_INSERT_REQUEST);
 
-		jdbcTemplate.update(sqlText, new BeanPropertySqlParameterSource(request));
+		jdbcTemplate.update(sqlText,
+				new BeanPropertySqlParameterSource(request));
 	}
 
 	@Override
-	public void update(Integer emailRequestId, String status) {
-		// TODO Auto-generated method stub
+	public void update(Integer requestId, String status) {
+		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(
+				dataSource);
+		String sqlText = getSQL(SQL_UPDATE_REQUEST);
 		
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource(
+				"requestId", requestId);
+		namedParameters.addValue("status", status);
+		namedParameters.addValue("updatedDate", new Date());
+	
+		jdbcTemplate.update(sqlText, namedParameters);
 	}
 
 	@Override
 	public List<EmailRequest> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		String sqlText = getSQL(SQL_GET_ALL_REQUESTS);
+
+		ResulRowHandler rowHandler = new ResulRowHandler();
+		jdbcTemplate.query(sqlText, rowHandler);
+
+		return rowHandler.getResults();
 	}
 
 	@Override
 	public EmailRequest findById(Integer requestId) {
-		// TODO Auto-generated method stub
-		return null;
+		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(
+				dataSource);
+		String sqlText = getSQL(SQL_FIND_BY_REQUEST_ID);
+
+		SqlParameterSource namedParameters = new MapSqlParameterSource(
+				"requestId", requestId);
+
+		ResulRowHandler rowHandler = new ResulRowHandler();
+		jdbcTemplate.query(sqlText, namedParameters, rowHandler);
+
+		if (rowHandler.getResults().size() > 0) {
+			return rowHandler.getResults().get(0);
+		} else {
+			return null;
+		}
 	}
 
+	/**
+	 * Class to handle the search results
+	 * 
+	 */
+	private class ResulRowHandler implements RowCallbackHandler {
+		List<EmailRequest> results = new ArrayList<EmailRequest>();
+
+		public List<EmailRequest> getResults() {
+			return results;
+		}
+
+		@Override
+		public void processRow(ResultSet rs) throws SQLException {
+			EmailRequest request = resultBeanHandler.handle(rs,
+					EmailRequest.class);
+			results.add(request);
+		}
+	}
 
 }

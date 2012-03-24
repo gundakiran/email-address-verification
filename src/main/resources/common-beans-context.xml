@@ -13,15 +13,8 @@
 
 	<context:annotation-config />
 	<context:component-scan base-package="com.llt.email" />
-	<tx:annotation-driven mode="proxy" />
 	
 	<bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate" />
-
-	<!--  Jndi Destination Resolver to resolve JNDI based objects -->
-	<bean id="jndiDestinationResolver"
-		class="org.springframework.jms.support.destination.JndiDestinationResolver">
-		<property name="jndiTemplate" ref="jndiTemplate" />
-	</bean>
 
 	<!-- JNDI Datasource -->
 	<bean id="jndiDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
@@ -29,13 +22,4 @@
 		<property name="jndiName" value="java:comp/env/jdbc/emailDB" />
 	</bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
-    
-	<!-- Tomcat transaction manager jar should be present in the server lib, i think -->
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="cacheUserTransaction">
-			<value>false</value>
-		</property>
-	</bean>
 </beans>	

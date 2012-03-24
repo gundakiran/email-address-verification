@@ -2,6 +2,8 @@ package com.llt.email.service.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,34 +15,40 @@ import com.llt.email.service.EmailService;
 
 @Service("emailService")
 public class EmailServiceImpl implements EmailService {
+	private static final Logger logger = LoggerFactory
+			.getLogger(EmailServiceImpl.class);
+
 	@Autowired
 	private EmailRequestDao emailRequestDao;
 
 	@Autowired
 	private EmailResponseDao emailResponseDao;
-	
+
 	@Override
 	public List<EmailRequest> getAllEmailRequests() {
-		// TODO Auto-generated method stub
-		return null;
+		List<EmailRequest> requests = emailRequestDao.findAll();
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("Number of requests : "
+					+ (requests != null ? requests.size() : "0"));
+		}
+
+		return requests;
 	}
 
 	@Override
 	public EmailRequest getEmailRequest(Integer requestId) {
-		// TODO Auto-generated method stub
-		return null;
+		return emailRequestDao.findById(requestId);
 	}
 
 	@Override
 	public List<EmailResponse> getEmailResponses(Integer requestId) {
-		// TODO Auto-generated method stub
-		return null;
+		return emailResponseDao.findByRequestId(requestId);
 	}
 
 	@Override
+	// TODO: @Transaction configuration is pending.
 	public void createEmailRequest(EmailRequest request) {
-		// TODO Auto-generated method stub
-		
+		emailRequestDao.insert(request);
 	}
-
 }

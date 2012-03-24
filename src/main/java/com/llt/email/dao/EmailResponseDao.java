@@ -10,7 +10,7 @@ public interface EmailResponseDao {
 	
 	public List<EmailResponse> findByRequestId(Integer requestId);
 	
-	public static final String SQL_INSERT_REQUEST="SQL_INSERT_RESPONSE";
+	public static final String SQL_INSERT_RESPONSE="SQL_INSERT_RESPONSE";
 	public static final String SQL_GET_RESPONSES_BY_REQUEST_ID="SQL_GET_RESPONSES_BY_REQUEST_ID";
 
 }
