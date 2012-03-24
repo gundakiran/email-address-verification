@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd ">
+
+  <util:map id="sqlMap" key-type="java.lang.String" value-type="java.lang.String">
+     <!-- TODO: DO NOT hard code the prefix -->
+     
+     <entry key="SQL_GET_ALL_REQUESTS">
+	  	<value>
+            <![CDATA[
+                SELECT a.emailRequestId emailRequestId, a.requestorEmailAddress requestorEmailAddress, 
+                       a.domain domain, a.firstName firstName, a.lastName lastName, a.status status,
+                       a.createdDate createdDate, a.updatedDate updatedDate
+                FROM  email_request a
+              ]]>
+	  	</value>
+     </entry>
+     
+     <entry key="SQL_FIND_BY_REQUEST_ID">
+	  	<value>
+            <![CDATA[
+                SELECT a.emailRequestId emailRequestId, a.requestorEmailAddress requestorEmailAddress, 
+                       a.domain domain, a.firstName firstName, a.lastName lastName, a.status status,
+                       a.createdDate createdDate, a.updatedDate updatedDate
+                FROM  email_request a
+                WHERE a.emailRequestId = :requestId
+              ]]>
+	  	</value>
+     </entry>     
+     
+     <entry key="SQL_INSERT_REQUEST">
+	  	<value>
+            <![CDATA[
+                 INSERT INTO email_request (
+							requestorEmailAddress	,
+							domain   	,
+							firstName	,
+							lastName	,
+							status		
+						 )
+				VALUES (
+						:requestorEmailAddress,
+						:domain,
+						:firstName,
+						:lastName,
+						:status
+				       )    			       	
+              ]]>
+	  	</value>
+     </entry>  
+     
+     <entry key="SQL_UPDATE_REQUEST">
+	  	<value>
+            <![CDATA[
+                 UPDATE email_request 
+                 SET status = :status, updatedDate = :updatedDate
+                 WHERE emailRequestId = :requestId	
+              ]]>
+	  	</value>
+     </entry>       
+     <entry key="SQL_INSERT_RESPONSE">
+	  	<value>
+            <![CDATA[
+                 INSERT INTO email_response (
+							emailRequestId	,
+							emailAddressTried   	,
+							status		
+						 )
+				VALUES (
+						:requestId,
+						:emailAddressTried,
+						:status
+				       )    			       	
+              ]]>
+	  	</value>
+     </entry>     
+     <entry key="SQL_GET_RESPONSES_BY_REQUEST_ID">
+	  	<value>
+            <![CDATA[
+                SELECT a.emailResponseId emailResponseId, a.emailRequestId emailRequestId, 
+                       a.emailAddressTried emailAddressTried, a.status status,
+                       a.createdDate createdDate, a.updatedDate updatedDate
+                FROM  email_response a
+                WHERE a.emailRequestId = :requestId   			       	
+              ]]>
+	  	</value>
+     </entry>      
+        
+  </util:map>  
+  
+</beans>
