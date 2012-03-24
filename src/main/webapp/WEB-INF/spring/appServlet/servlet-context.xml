@@ -11,6 +11,8 @@
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
+	<context:annotation-config />
+	<context:component-scan base-package="com.llt.email.controller" />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
@@ -20,8 +22,13 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
+<<<<<<< HEAD
 	
 	<context:component-scan base-package="com.llt.email.controller" />
 	
 	
 </beans:beans>
+=======
+
+</beans:beans>
+>>>>>>> 218c1babb4f88c17bedcd22874948e3328d899c1
