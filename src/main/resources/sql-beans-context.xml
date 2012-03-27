@@ -17,7 +17,7 @@
             <![CDATA[
                 SELECT a.emailRequestId emailRequestId, a.requestorEmailAddress requestorEmailAddress, 
                        a.domain domain, a.firstName firstName, a.lastName lastName, a.status status,
-                       a.createdDate createdDate, a.updatedDate updatedDate
+                       a.createdDate createdDate, a.updatedDate updatedDate, a.validEmailAddress validEmailAddress
                 FROM  email_request a
               ]]>
 	  	</value>
@@ -28,7 +28,7 @@
             <![CDATA[
                 SELECT a.emailRequestId emailRequestId, a.requestorEmailAddress requestorEmailAddress, 
                        a.domain domain, a.firstName firstName, a.lastName lastName, a.status status,
-                       a.createdDate createdDate, a.updatedDate updatedDate
+                       a.createdDate createdDate, a.updatedDate updatedDate, a.validEmailAddress validEmailAddress
                 FROM  email_request a
                 WHERE a.emailRequestId = :requestId
               ]]>
@@ -60,7 +60,7 @@
 	  	<value>
             <![CDATA[
                  UPDATE email_request 
-                 SET status = :status, updatedDate = :updatedDate
+                 SET status = :status, updatedDate = :updatedDate, validEmailAddress = :validEmailAddress
                  WHERE emailRequestId = :requestId	
               ]]>
 	  	</value>
@@ -91,8 +91,94 @@
                 WHERE a.emailRequestId = :requestId   			       	
               ]]>
 	  	</value>
-     </entry>      
-        
+     </entry> 
+     <entry key="SQL_GET_RESPONSES_BY_REQUEST_ID_AND_STATUS">
+	  	<value>
+            <![CDATA[
+                SELECT a.emailResponseId emailResponseId, a.emailRequestId emailRequestId, 
+                       a.emailAddressTried emailAddressTried, a.status status,
+                       a.createdDate createdDate, a.updatedDate updatedDate
+                FROM  email_response a
+                WHERE a.emailRequestId = :requestId   AND
+                      a.status = :status	       	
+              ]]>
+	  	</value>
+     </entry>            
+
+     <entry key="SQL_INSERT_JOB">
+	  	<value>
+            <![CDATA[
+                 INSERT INTO job_master (
+							jobName,
+							status		
+						 )
+				VALUES (
+						:jobName,
+						:status
+				       )    			       	
+              ]]>
+	  	</value>
+     </entry>
+     
+      <entry key="SQL_UPDATE_JOB">
+	  	<value>
+            <![CDATA[
+                 UPDATE job_master
+                 SET status = :status
+                 where jobName = :jobName    			       	
+              ]]>
+	  	</value>
+     </entry>    
+     
+       <entry key="SQL_GET_JOB">
+	  	<value>
+            <![CDATA[
+                 select jobName, status
+                 from job_master
+                 where jobName = :jobName    			       	
+              ]]>
+	  	</value>
+     </entry>  
+     
+     <entry key="SQL_GET_INVALID_REQUESTS">
+	  	<value>
+            <![CDATA[
+                SELECT a.emailRequestId emailRequestId, a.requestorEmailAddress requestorEmailAddress, 
+                       a.domain domain, a.firstName firstName, a.lastName lastName, a.status status,
+                       a.createdDate createdDate, a.updatedDate updatedDate, a.validEmailAddress validEmailAddress
+                FROM  email_request a
+                WHERE a.status = :requestStatus AND
+                      a.updatedDate <= :cutOffDate AND
+                EXISTS
+                   (SELECT 'x'
+                    FROM email_response b
+                    WHERE b.emailRequestId = a.emailRequestId AND
+                          b.status = :responseStatus 
+                    GROUP BY emailRequestId
+                    HAVING count(1) < 9
+                   )                 
+              ]]>
+	  	</value>
+     </entry> 
+     <entry key="SQL_GET_VALID_REQUESTS">
+	  	<value>
+            <![CDATA[
+                SELECT a.emailRequestId emailRequestId, a.requestorEmailAddress requestorEmailAddress, 
+                       a.domain domain, a.firstName firstName, a.lastName lastName, a.status status,
+                       a.createdDate createdDate, a.updatedDate updatedDate, a.validEmailAddress validEmailAddress
+                FROM  email_request a
+                WHERE a.status = :requestStatus AND
+                      a.updatedDate <= :cutOffDate AND
+                EXISTS
+                   (SELECT 'x'
+                    FROM email_response b
+                    WHERE b.emailRequestId = a.emailRequestId AND
+                          b.status = :responseStatus 
+                    GROUP BY emailRequestId
+                    HAVING count(1) = 9
+                   )                 
+              ]]>
+	  	</value>
+     </entry> 
   </util:map>  
-  
 </beans>

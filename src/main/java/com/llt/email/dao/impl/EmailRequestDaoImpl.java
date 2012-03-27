@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import com.llt.email.dao.EmailRequestDao;
 import com.llt.email.dao.helper.BeanHandler;
 import com.llt.email.model.EmailRequest;
+import com.llt.email.util.Status;
 
 @Repository("emailRequestDao")
 public class EmailRequestDaoImpl extends BaseDaoImpl implements EmailRequestDao {
@@ -44,15 +45,16 @@ public class EmailRequestDaoImpl extends BaseDaoImpl implements EmailRequestDao 
 	}
 
 	@Override
-	public void update(Integer requestId, String status) {
+	public void update(Integer requestId, Status status, String validEmailAddress) {
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(
 				dataSource);
 		String sqlText = getSQL(SQL_UPDATE_REQUEST);
 		
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource(
 				"requestId", requestId);
-		namedParameters.addValue("status", status);
+		namedParameters.addValue("status", status.getCode());
 		namedParameters.addValue("updatedDate", new Date());
+		namedParameters.addValue("validEmailAddress", validEmailAddress);
 	
 		jdbcTemplate.update(sqlText, namedParameters);
 	}
@@ -86,7 +88,42 @@ public class EmailRequestDaoImpl extends BaseDaoImpl implements EmailRequestDao 
 			return null;
 		}
 	}
+	
+	@Override
+	public List<EmailRequest> findInvalidEmailRequests(Date cutOffDate) {
+		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		String sqlText = getSQL(SQL_GET_INVALID_REQUESTS);
 
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource(
+				"cutOffDate", cutOffDate);
+		namedParameters.addValue("requestStatus",Status.IN_PROGRESS.getCode());
+		namedParameters.addValue("responseStatus",Status.INVALID.getCode());
+
+		ResulRowHandler rowHandler = new ResulRowHandler();
+		jdbcTemplate.query(sqlText, namedParameters,rowHandler);
+
+		return rowHandler.getResults();
+	}
+
+	@Override
+	public List<EmailRequest> findValidEmailRequests(Date cutOffDate) {
+		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		String sqlText = getSQL(SQL_GET_VALID_REQUESTS);
+
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource(
+				"cutOffDate", cutOffDate);
+		String code = Status.IN_PROGRESS.getCode();
+		String status = Status.INVALID.getCode();
+		
+		namedParameters.addValue("requestStatus",Status.IN_PROGRESS.getCode());
+		namedParameters.addValue("responseStatus",Status.INVALID.getCode());
+
+		ResulRowHandler rowHandler = new ResulRowHandler();
+		jdbcTemplate.query(sqlText, namedParameters,rowHandler);
+
+		return rowHandler.getResults();
+	}
+	
 	/**
 	 * Class to handle the search results
 	 * 

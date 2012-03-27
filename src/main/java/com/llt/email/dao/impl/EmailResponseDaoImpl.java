@@ -19,9 +19,11 @@ import org.springframework.stereotype.Repository;
 import com.llt.email.dao.EmailResponseDao;
 import com.llt.email.dao.helper.BeanHandler;
 import com.llt.email.model.EmailResponse;
+import com.llt.email.util.Status;
 
 @Repository("emailResponseDao")
-public class EmailResponseDaoImpl extends BaseDaoImpl implements EmailResponseDao {
+public class EmailResponseDaoImpl extends BaseDaoImpl implements
+		EmailResponseDao {
 	@Autowired
 	@Qualifier("jndiDataSource")
 	protected DataSource dataSource;
@@ -37,8 +39,8 @@ public class EmailResponseDaoImpl extends BaseDaoImpl implements EmailResponseDa
 
 		String sqlText = getSQL(SQL_INSERT_RESPONSE);
 
-		jdbcTemplate.update(sqlText,
-				new BeanPropertySqlParameterSource(response));
+		jdbcTemplate.update(sqlText, new BeanPropertySqlParameterSource(
+				response));
 	}
 
 	@Override
@@ -55,7 +57,7 @@ public class EmailResponseDaoImpl extends BaseDaoImpl implements EmailResponseDa
 
 		return rowHandler.getResults();
 	}
-	
+
 	/**
 	 * Class to handle the search results
 	 * 
@@ -73,5 +75,21 @@ public class EmailResponseDaoImpl extends BaseDaoImpl implements EmailResponseDa
 					EmailResponse.class);
 			results.add(request);
 		}
+	}
+
+	@Override
+	public List<EmailResponse> findByStatus(Integer requestId, Status status) {
+		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(
+				dataSource);
+		String sqlText = getSQL(SQL_GET_RESPONSES_BY_REQUEST_ID_AND_STATUS);
+
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource(
+				"requestId", requestId);
+		namedParameters.addValue("status", status.getCode());
+
+		ResulRowHandler rowHandler = new ResulRowHandler();
+		jdbcTemplate.query(sqlText, namedParameters, rowHandler);
+
+		return rowHandler.getResults();
 	}
 }

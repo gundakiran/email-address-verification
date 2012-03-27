@@ -22,6 +22,8 @@ public class EmailRequest {
 	private Timestamp createdDate;
 	@Column(name="updatedDate")
 	private Timestamp updatedDate;
+	@Column(name="validEmailAddress")
+	private String validEmailAddress;
 	
 	public Integer getEmailRequestId() {
 		return emailRequestId;
@@ -70,5 +72,11 @@ public class EmailRequest {
 	}
 	public void setUpdatedDate(Timestamp updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+	public String getValidEmailAddress() {
+		return validEmailAddress;
+	}
+	public void setValidEmailAddress(String validEmailAddress) {
+		this.validEmailAddress = validEmailAddress;
 	}
 }
