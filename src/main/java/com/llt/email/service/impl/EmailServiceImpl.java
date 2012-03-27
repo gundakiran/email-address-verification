@@ -180,4 +180,9 @@ public class EmailServiceImpl implements EmailService {
 	private static final String FROM_EMAIL = "noreply@emailbuddy.com";
 	private static final String TEMPLATE_INVALID_EMAIL = "email_id_not_found.ftl";
 	private static final String TEMPLATE_VALID_EMAIL = "email_id_found.ftl";
+
+	@Override
+	public List<EmailRequest> getAllEmailRequests() {
+		return emailRequestDao.findAll();
+	}
 }
