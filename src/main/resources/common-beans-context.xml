@@ -34,6 +34,7 @@
 				<prop key="mail.username">emailbuddy@libertyleap.net</prop>
 				<prop key="mail.password">emailbuddy</prop>
 				<prop key="cut.off.minutes">15</prop>
+				<prop key="from.address">emailbuddy@libertyleap.net</prop>
 			</props>
 		</property>	
 	</bean>
@@ -47,7 +48,8 @@
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.smtp.auth">true</prop>
-				<!--  <prop key="mail.smtp.starttls.enable">true</prop> -->
+				
+				 <prop key="mail.debug">true</prop>
 			</props>
 		</property>
 		

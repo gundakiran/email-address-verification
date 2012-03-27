@@ -35,6 +35,7 @@ public class EmailServiceImpl implements EmailService {
 	private NotificationService notificationService;
 
 	private String cutOffMinutes;
+	private String fromAddress;
 
 	@Override
 	public void createEmailRequest(EmailRequest request) {
@@ -44,6 +45,11 @@ public class EmailServiceImpl implements EmailService {
 	@Value("${cut.off.minutes}")
 	public void setCutOffMinutes(String cutOffMinutes) {
 		this.cutOffMinutes = cutOffMinutes;
+	}
+	
+	@Value("${from.address}")
+	public void setFromAddress(String fromAddress) {
+		this.fromAddress = fromAddress;
 	}
 
 	@Override
@@ -123,7 +129,7 @@ public class EmailServiceImpl implements EmailService {
 			attributes.put("firstName", req.getFirstName());
 			attributes.put("lastName", req.getLastName());
 
-			notificationService.send(FROM_EMAIL,
+			notificationService.send(fromAddress,
 					req.getRequestorEmailAddress(),
 					invalidSubject(req.getFirstName(), req.getLastName()),
 					attributes, TEMPLATE_INVALID_EMAIL);
@@ -163,9 +169,9 @@ public class EmailServiceImpl implements EmailService {
 			attributes.put("lastName", req.getLastName());
 			attributes.put("validEmailAddress", validEmailAddress);
 
-			notificationService.send(FROM_EMAIL,
+			notificationService.send(fromAddress,
 					req.getRequestorEmailAddress(),
-					invalidSubject(req.getFirstName(), req.getLastName()),
+					validSubject(req.getFirstName(), req.getLastName()),
 					attributes, TEMPLATE_VALID_EMAIL);
 
 			// 3. Update the EmailRequest Status
@@ -177,7 +183,7 @@ public class EmailServiceImpl implements EmailService {
 		}
 	}
 
-	private static final String FROM_EMAIL = "noreply@emailbuddy.com";
+	
 	private static final String TEMPLATE_INVALID_EMAIL = "email_id_not_found.ftl";
 	private static final String TEMPLATE_VALID_EMAIL = "email_id_found.ftl";
 

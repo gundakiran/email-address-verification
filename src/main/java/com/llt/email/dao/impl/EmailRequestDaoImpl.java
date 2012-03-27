@@ -112,8 +112,6 @@ public class EmailRequestDaoImpl extends BaseDaoImpl implements EmailRequestDao 
 
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource(
 				"cutOffDate", cutOffDate);
-		String code = Status.IN_PROGRESS.getCode();
-		String status = Status.INVALID.getCode();
 		
 		namedParameters.addValue("requestStatus",Status.IN_PROGRESS.getCode());
 		namedParameters.addValue("responseStatus",Status.INVALID.getCode());
