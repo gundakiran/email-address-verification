@@ -28,6 +28,15 @@ public class EmailResponseDaoImpl extends BaseDaoImpl implements
 	@Qualifier("jndiDataSource")
 	protected DataSource dataSource;
 
+<<<<<<< HEAD
+=======
+@Repository("emailResponseDao")
+public class EmailResponseDaoImpl extends BaseDaoImpl implements EmailResponseDao {
+	@Autowired
+	@Qualifier("jndiDataSource")
+	protected DataSource dataSource;
+
+>>>>>>> 218c1babb4f88c17bedcd22874948e3328d899c1
 	@Autowired
 	@Qualifier("beanHandler")
 	protected BeanHandler<EmailResponse> resultBeanHandler;
@@ -39,8 +48,13 @@ public class EmailResponseDaoImpl extends BaseDaoImpl implements
 
 		String sqlText = getSQL(SQL_INSERT_RESPONSE);
 
+<<<<<<< HEAD
 		jdbcTemplate.update(sqlText, new BeanPropertySqlParameterSource(
 				response));
+=======
+		jdbcTemplate.update(sqlText,
+				new BeanPropertySqlParameterSource(response));
+>>>>>>> 218c1babb4f88c17bedcd22874948e3328d899c1
 	}
 
 	@Override
@@ -48,6 +62,7 @@ public class EmailResponseDaoImpl extends BaseDaoImpl implements
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(
 				dataSource);
 		String sqlText = getSQL(SQL_GET_RESPONSES_BY_REQUEST_ID);
+<<<<<<< HEAD
 
 		SqlParameterSource namedParameters = new MapSqlParameterSource(
 				"requestId", requestId);
@@ -58,6 +73,18 @@ public class EmailResponseDaoImpl extends BaseDaoImpl implements
 		return rowHandler.getResults();
 	}
 
+=======
+
+		SqlParameterSource namedParameters = new MapSqlParameterSource(
+				"requestId", requestId);
+
+		ResulRowHandler rowHandler = new ResulRowHandler();
+		jdbcTemplate.query(sqlText, namedParameters, rowHandler);
+
+		return rowHandler.getResults();
+	}
+	
+>>>>>>> 218c1babb4f88c17bedcd22874948e3328d899c1
 	/**
 	 * Class to handle the search results
 	 * 
@@ -76,6 +103,7 @@ public class EmailResponseDaoImpl extends BaseDaoImpl implements
 			results.add(request);
 		}
 	}
+<<<<<<< HEAD
 
 	@Override
 	public List<EmailResponse> findByStatus(Integer requestId, Status status) {
@@ -92,4 +120,6 @@ public class EmailResponseDaoImpl extends BaseDaoImpl implements
 
 		return rowHandler.getResults();
 	}
+=======
+>>>>>>> 218c1babb4f88c17bedcd22874948e3328d899c1
 }
