@@ -114,7 +114,7 @@
 						 )
 				VALUES (
 						:jobName,
-						:status
+						:jobStatus
 				       )    			       	
               ]]>
 	  	</value>
@@ -124,7 +124,7 @@
 	  	<value>
             <![CDATA[
                  UPDATE job_master
-                 SET status = :status
+                 SET status = :jobStatus
                  where jobName = :jobName    			       	
               ]]>
 	  	</value>
